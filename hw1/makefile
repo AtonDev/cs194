@@ -1,11 +1,20 @@
 default:
 	echo 'default'
 
-sum:
-	g++ -msse4 -O2 sum.cpp -o sum-out
+skeleton:
+	g++ -msse4 -O2 counters.cpp skeleton.cpp -o skeleton-out
 
-random:
-	g++ -msse4 -O2 random.cpp -o random-out
+sum:
+	g++ -msse4 -O2 counters.cpp sum.cpp -o sum-out
+	./sum-out
+	g++ -msse4 counters.cpp sum.cpp -o sum-out
+	./sum-out
+
+sum_n:
+	g++ -msse4 -O2 counters.cpp sum.cpp -o sum-out
+	./sum-out 10000
+	g++ -msse4 counters.cpp sum.cpp -o sum-out
+	./sum-out 10000
 
 clean:
 	rm -rf *-out

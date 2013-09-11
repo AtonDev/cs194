@@ -1,0 +1,19 @@
+Arturo Pacifico Griffini
+
+1 Measuring Execution Time 
+Print sum (on), hardcoded (off)
+--With -O2 enabled it takes 107938 ticks.
+--Without -O2 enabled it takes 147217 ticks.
+Print sum (on), hardcoded (on)
+--With -O2 enabled it takes 78011 ticks.
+--Without -O2 enabled it takes 139840 ticks.
+Print sum (off), hardcoded (off)
+--With -O2 enabled it takes 8021 ticks.
+--Without -O2 enabled it takes 69745 ticks.
+Print sum (off), hardcoded (on)
+--With -O2 enabled it takes 1245 ticks.
+--Without -O2 enabled it takes 67005 ticks.
+
+--Discrepancy in timing: -O2 is a compiler flag that tells the compiler to optimize your code for performance. Hence, without the -O2 flag the code runs slower and it takes more 'ticks' to execute. Hardcoding, your inputs takes off the overhead of processing your inputs from the command line. e.g we need to make the string "10000" into and integer before we can use it. Hence hardcoding improves performance. Printf, also takes time to execute and therefore the additional ticks when we print the sum.
+
+--Best Configuration: print off; hardcoded on; -O2 flag off. With this configuration we exclude the overhead of input/output processing and test the performance of the bare algorithm, since we do not let the compiler do any magic on it.
