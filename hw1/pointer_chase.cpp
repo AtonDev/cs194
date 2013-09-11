@@ -2,7 +2,9 @@
 #include <cstdio>
 #include <cstring>
 #include <time.h>
-//#include "counters.h"
+#include "counters.h"
+
+#define STEPS 1024*1024
 
 //forward declaration
 int main(int argc, char *argv[]);
@@ -14,8 +16,11 @@ int main(int argc, char *argv[]) {
     printf("Requires one argument. \n");
     return 1;
   }
-  //init number of steps
-  int steps = 10;
+
+  //init counter
+  hwCounter_t c1;
+  c1.init = false;
+  initTicks(c1);
 
   //init and shuffle array
   int N = atoi(argv[1]);
@@ -23,14 +28,19 @@ int main(int argc, char *argv[]) {
   shuffleArray(array, N);
 
   //start counter
+  uint64_t start = getTicks(c1);
 
   //execute pointer chasing
   int index = 0;
-  for (int i = 0; i < steps; ++i)
+  for (int i = 0; i < STEPS; ++i)
     index = array[index];
 
   //counter computation
-
+  uint64_t elapsed = getTicks(c1) - start;
+  double avg = (double)elapsed / STEPS;
+  //print elapsed time
+  printf("Avg ticks per cycle: %.2f\n", avg);
+  printf("Size of int: %lu\n", sizeof(int));
   //good exit
   return 0;
 }

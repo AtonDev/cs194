@@ -17,3 +17,15 @@ Print sum (off), hardcoded (on)
 --Discrepancy in timing: -O2 is a compiler flag that tells the compiler to optimize your code for performance. Hence, without the -O2 flag the code runs slower and it takes more 'ticks' to execute. Hardcoding, your inputs takes off the overhead of processing your inputs from the command line. e.g we need to make the string "10000" into and integer before we can use it. Hence hardcoding improves performance. Printf, also takes time to execute and therefore the additional ticks when we print the sum.
 
 --Best Configuration: print off; hardcoded on; -O2 flag off. With this configuration we exclude the overhead of input/output processing and test the performance of the bare algorithm, since we do not let the compiler do any magic on it.
+
+--argv is an array of character arrays (strings) where the strings at index 1, ..., n are the inputs in the command line and argv[0] is the name of the executable. argv[1] = "10000" in our case.
+
+--atoi() is a function in the standard library that takes a string as argument and returns the correspondin integer.
+
+2 Measuring Memory Latency
+
+--How does ptr_chasing benchamrk measure memory latency:
+
+--sizeof(int[N]): 4*N bytes
+
+

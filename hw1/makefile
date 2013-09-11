@@ -16,5 +16,9 @@ sum_n:
 	g++ -msse4 counters.cpp sum.cpp -o sum-out
 	./sum-out 10000
 
+ptr_chase:
+	g++ counters.cpp pointer_chase.cpp -o ptr-out
+
 clean:
 	rm -rf *-out
+	rm -rf *~
