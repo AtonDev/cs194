@@ -23,7 +23,7 @@ mem_b:
 	g++ mem_b.cpp -o mem-out
 
 graph:
-	g++ -O2 graph.cpp -o test-out
+	g++ -O2 test.cpp -o test-out
 
 clean:
 	rm -rf *-out

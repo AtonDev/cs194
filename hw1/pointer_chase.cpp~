@@ -9,7 +9,6 @@
 //forward declaration
 int main(int argc, char *argv[]);
 void shuffleArray(int array[], int size);
-double pointer_chase(int N);
 
 /*Takes N as argument.*/
 int main(int argc, char *argv[]) {
@@ -17,26 +16,14 @@ int main(int argc, char *argv[]) {
     printf("Requires one argument. \n");
     return 1;
   }
-  int n = atoi(argv[1])
 
-  //print elapsed time
-  printf("Avg ticks per cycle: %.2f\n", ptr_chase(int N));
-  printf("Size of int: %lu\n", sizeof(int));
-
-  //good exit
-  return 0;
-}
-
-/* Returns the avg number of cycles per step
-   for pointer chasing on an array of size N. */
-double ptr_chase(int N)
-{
   //init counter
   hwCounter_t c1;
   c1.init = false;
   initTicks(c1);
 
   //init and shuffle array
+  int N = atoi(argv[1]);
   int array[N];
   shuffleArray(array, N);
 
@@ -45,13 +32,17 @@ double ptr_chase(int N)
 
   //execute pointer chasing
   int index = 0;
-  for (int i = 0; i < STEPS; ++i) {
-      index = array[index];
-    }
+  for (int i = 0; i < STEPS; ++i)
+    index = array[index];
 
   //counter computation
   uint64_t elapsed = getTicks(c1) - start;
   double avg = (double)elapsed / STEPS;
+  //print elapsed time
+  printf("Avg ticks per cycle: %.2f\n", avg);
+  printf("Size of int: %lu\n", sizeof(int));
+  //good exit
+  return 0;
 }
 
 
