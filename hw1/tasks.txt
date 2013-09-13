@@ -24,7 +24,8 @@ Print sum (off), hardcoded (on)
 
 2 Measuring Memory Latency
 
---How does ptr_chasing benchamrk measure memory latency:
+--How does ptr_chasing benchamrk measure memory latency: because by accessing adresses withhin a certain memory bound you may or may not exploit spatial locality. Hence it would be a base for 0 memory latency optimisation.  
+
 
 --sizeof(int[N]): 4*N bytes
 

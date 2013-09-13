@@ -2,25 +2,41 @@
 #include <cstdio>
 #include <cstring>
 #include <time.h>
+#include <iostream>
+#include <fstream>
+#include <string>
 #include "counters.h"
 
-#define STEPS 1024*1024
+#define STEPS 1048576
+
+using namespace std;
 
 //forward declaration
 int main(int argc, char *argv[]);
 void shuffleArray(int array[], int size);
-double pointer_chase(int N);
+double ptr_chase(int N);
 
-/*Takes N as argument.*/
+/*Takes N as argument, N is the numb of ints..*/
 int main(int argc, char *argv[]) {
   if (argc !=2) {
     printf("Requires one argument. \n");
     return 1;
   }
-  int n = atoi(argv[1])
+  int n = atoi(argv[1]);
+  //write in file 
+  ofstream myfile;
+  myfile.open ("ptr_chase.csv");
+  for (int i = 1; 8000 * i <= 4000000; i *= 2)
+    {
+      myfile << (32 * i);
+      myfile << ", ";
+      myfile << ptr_chase(8000 * i);
+      myfile << "\n";
+    }
+  myfile.close();
 
   //print elapsed time
-  printf("Avg ticks per cycle: %.2f\n", ptr_chase(int N));
+  printf("Avg ticks per cycle: %.2f\n", ptr_chase(n));
   printf("Size of int: %lu\n", sizeof(int));
 
   //good exit
@@ -28,7 +44,7 @@ int main(int argc, char *argv[]) {
 }
 
 /* Returns the avg number of cycles per step
-   for pointer chasing on an array of size N. */
+   for pointer chasing on an array of size N * 4 bytes. */
 double ptr_chase(int N)
 {
   //init counter
@@ -37,7 +53,7 @@ double ptr_chase(int N)
   initTicks(c1);
 
   //init and shuffle array
-  int array[N];
+  int * array = (int *)malloc(sizeof(int) * N);
   shuffleArray(array, N);
 
   //start counter
@@ -45,7 +61,8 @@ double ptr_chase(int N)
 
   //execute pointer chasing
   int index = 0;
-  for (int i = 0; i < STEPS; ++i) {
+  int steps = STEPS;
+  for (int i = 0; i < steps; ++i) {
       index = array[index];
     }
 

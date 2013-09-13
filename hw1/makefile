@@ -28,3 +28,4 @@ graph:
 clean:
 	rm -rf *-out
 	rm -rf *~
+	rm -rf ptr_chase.csv
