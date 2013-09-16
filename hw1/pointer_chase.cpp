@@ -8,6 +8,8 @@
 #include "counters.h"
 
 #define STEPS 1048576
+#define KBYTE 1000
+#define MBYTE 1000000
 
 using namespace std;
 
@@ -15,6 +17,7 @@ using namespace std;
 int main(int argc, char *argv[]);
 void shuffleArray(int array[], int size);
 double ptr_chase(int N);
+void cycle1permutation(int n_permutation[], int size);
 
 /*Takes N as argument, N is the numb of ints..*/
 int main(int argc, char *argv[]) {
@@ -23,14 +26,17 @@ int main(int argc, char *argv[]) {
     return 1;
   }
   int n = atoi(argv[1]);
-  //write in file 
+  int step = KBYTE;
+  int u_bound = MBYTE;
+
+  //write in file
   ofstream myfile;
   myfile.open ("ptr_chase.csv");
-  for (int i = 1; 8000 * i <= 4000000; i *= 2)
+  for (int i = 1; step * i <= u_bound; i *= 2)
     {
-      myfile << (32 * i);
+      myfile << (32 * (int)KBYTE + step * i);
       myfile << ", ";
-      myfile << ptr_chase(8000 * i);
+      myfile << ptr_chase(32 * (int)KBYTE + step * i);
       myfile << "\n";
     }
   myfile.close();
@@ -44,9 +50,12 @@ int main(int argc, char *argv[]) {
 }
 
 /* Returns the avg number of cycles per step
-   for pointer chasing on an array of size N * 4 bytes. */
-double ptr_chase(int N)
+   for pointer chasing on an array of size BYTES in bytes. */
+double ptr_chase(int bytes)
 {
+  //number of ints in array
+  int N = bytes / sizeof(int);
+
   //init counter
   hwCounter_t c1;
   c1.init = false;
@@ -54,7 +63,7 @@ double ptr_chase(int N)
 
   //init and shuffle array
   int * array = (int *)malloc(sizeof(int) * N);
-  shuffleArray(array, N);
+  cycle1permutation(int array, int N);
 
   //start counter
   uint64_t start = getTicks(c1);
@@ -71,6 +80,21 @@ double ptr_chase(int N)
   double avg = (double)elapsed / STEPS;
 }
 
+/* Sets NPARRAY to an array representation of an
+   N-Permuation with one cycle.*/
+void cycle1permutation(int nparray[], int size)
+{
+  int *cycle = (int *)malloc(size * sizeof(int));
+  // cycle representation of 1 cycle permutation of n
+  shuffleArray(int cycle, size);
+
+  // array representation of permutation
+  for (int i = 0; i < n - 1; i++)
+    {
+      nparray[cycle[i]] = cycle[i + 1];
+    }
+  nparray[cycle[size - 1]] = cycle[0];
+}
 
 /* Initializes ARRAY of size SIZE to (0, ..., SIZE-1)
    and shuffles it using Fisher-Yates algorithm. */
