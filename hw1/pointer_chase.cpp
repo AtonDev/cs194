@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
   //write in file
   ofstream myfile;
   myfile.open ("ptr_chase.csv");
-  for (int i = 1; step * i <= u_bound; i *= 2)
+  for (int i = 0; step * i <= u_bound; i *= 2)
     {
       myfile << (32 * (int)KBYTE + step * i);
       myfile << ", ";
@@ -63,8 +63,13 @@ double ptr_chase(int bytes)
 
   //init and shuffle array
   int * array = (int *)malloc(sizeof(int) * N);
-  cycle1permutation(int array, int N);
-
+  cycle1permutation(array, N);
+  if (N < 11) {
+    for (int i = 0; i < N; i++) {
+      printf("%d, ", array[i]);
+    }
+    printf("\n");
+  }
   //start counter
   uint64_t start = getTicks(c1);
 
@@ -86,10 +91,10 @@ void cycle1permutation(int nparray[], int size)
 {
   int *cycle = (int *)malloc(size * sizeof(int));
   // cycle representation of 1 cycle permutation of n
-  shuffleArray(int cycle, size);
+  shuffleArray(cycle, size);
 
   // array representation of permutation
-  for (int i = 0; i < n - 1; i++)
+  for (int i = 0; i < size - 1; i++)
     {
       nparray[cycle[i]] = cycle[i + 1];
     }

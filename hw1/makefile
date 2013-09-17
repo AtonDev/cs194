@@ -19,6 +19,9 @@ sum_n:
 ptr_chase:
 	g++ counters.cpp pointer_chase.cpp -o ptr-out
 
+p:
+	g++ counters.cpp pointer2.cpp -o p-out
+
 mem_b:
 	g++ mem_b.cpp -o mem-out
 
