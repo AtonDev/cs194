@@ -23,7 +23,7 @@ p:
 	g++ counters.cpp pointer2.cpp -o p-out
 
 mem_b:
-	g++ -O2 mem_b.cpp -o mem-out
+	g++ mem_b.cpp -o mem-out
 
 graph:
 	g++ -O2 graph.cpp -o test-out
