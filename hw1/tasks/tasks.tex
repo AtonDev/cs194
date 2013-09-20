@@ -57,7 +57,7 @@
 
 
 \lhead{Asssignment 1}
-
+\chead{UCID: 22365174}
 \rhead{Arturo Pacifico Griffini}
 
 \title{Assignment 1 }
@@ -170,15 +170,21 @@ void shuffleArray(int array[], int size) {
 \noindent\emph{Average bandwidth vs the size of the array}\\*
 The followings are plots showing the relationship between the average bandwidth (in Mbps) sustained by the memory system and the total size (in bytes) of the array for each of the three copy routines, our own routine, simd\_memcpy and simd\_memcpy\_cache. The size of the array varies  from 32 kilobytes to 8 megabytes. 
 
-TODO grpahs
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{graph_mem.png}
+\caption{series 1: inefficient routine; series 2: simd\_memcpy; series 3: simd\_memcpy\_cache}
+\label{fig:awesome_image}
+\end{figure}
 
 \noindent\emph{Discuss the shape of the curve:}\\*
-TODO\\[10pt]
+The drop in memory bandwidth around 2MB is due to the fact that by copying larger arrays, we are beginning to utilise L3 cache more. Hence we reduce the average bandwidth by having to fetch data from cache with lower bandwidth more often.\\[10pt]
 
 \noindent\emph{Why is it necessary to warm up the cache:}\\*
 We are doing a performance test against a system that usually has  a high number of hits. Without the warm-up we would get false number because of the initial compulsory misses.\\[10pt]
 
 \noindent\emph{Why an inefficient  copying procedure would yield an inaccurate measure of the maximum bandwidth:}\\*
+Because it will utilise lower level caches or memories more frequently than it could achieve by optimising the code. Lower level caches and memories have less bandwidth and hence by having to access them more frequently the average bandwidth gets lower than the maxim possible average bandwidth.
 
 
 \noindent\emph{Explain the SSE instructions:}\\*
@@ -190,15 +196,31 @@ We are doing a performance test against a system that usually has  a high number
 \end{itemize}
 
 
-\noindent\emph{:}\\*
 
-\noindent\emph{:}\\*
 
 \section{Measuring Flops and IPC}
 
+\begin{center}
+  \begin{tabular}{ l | c | r }
 
+       & IPC & GFlops \\ \hline
+    simd & 2.34 & 9.175 \\ \hline
+    scalar1 & 2.60 & 1.104 \\ \hline
+    scalar0 & 0.73 & 0.874 \\ \hline
+    naive & 0.33 & 0.195 \\
 
+  \end{tabular}
+\end{center}
 
+\noindent\emph{Floating point operations performed to multiply square matrices of size n:}\\*
+We require $n$ multiplications and $n - 1$ summations to perform the dot product of two vectors of size $n$. An there are $n^2$ such dot products we need to perform. Hence, the number of floating point operations ($F$) to multiply square matrices of size n is: 
+$$F = (2n - 1) \cdot n^2$$\\[10pt]
+
+\noindent\emph{How can you have $IPC > 1$:}\\*
+Say the we have a simple architecture that has an $IPC = 1$. If we can combine this architecture with another equal architecture in some smart way we could have $IPC = 2$. Processors that implement superscalar architecture could achieve $IPC > 1$. \\[10pt]
+
+\noindent\emph{Why a higher IPC is not always an indicator of an efficient program:}\\*
+Because we could write a program that could achieve the same task by utilising half the the instructions that is utilising right now. The second IPC would lower than the first one, but the time it takes to execute second program could be worse than the first one. 
 
 \end{document}
 
