@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <sys/time.h>
 #include <time.h>
-
+#include <omp.h>
 #include "readjpeg.h"
 
 typedef struct
@@ -23,10 +23,10 @@ double timestamp()
 }
 
 void blur_frame(int width, int height, int* blur_radii,
-		pixel_t *in, pixel_t *out)
+		pixel_t *in, pixel_t *out, int nthr)
 {
   pixel_t t;
-
+#pragma omp for
   for(int y = 0; y < height; y++)
     {
       for(int x = 0; x < width; x++)
@@ -169,11 +169,20 @@ int main(int argc, char *argv[])
     }
   
   convert_to_pixel(inPix, frame);
-  double t0 = timestamp();
-  blur_frame(width, height, blur_radii, inPix, outPix);
-  t0 = timestamp() - t0;
-  printf("%g sec\n", t0);
-
+  printf("Number of threads, time elapsed in ms\n");
+  double t0;
+  int t;
+  for (int nthr = 1; nthr <= 16; nthr += 1) {
+    omp_set_num_threads(nthr);
+    t0 = timestamp();
+#pragma omp parallel 
+    {
+      t = omp_get_num_threads();
+      blur_frame(width, height, blur_radii, inPix, outPix, nthr);
+    }
+      t0 = timestamp() - t0;
+      printf("%d, \t%.3f\n",t , t0 * 1000);
+  }
   convert_to_frame(frame, outPix);
 
   write_JPEG_file(outName,frame,75);
