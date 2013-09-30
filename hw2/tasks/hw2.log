@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  22 SEP 2013 14:03
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  23 SEP 2013 20:27
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -436,7 +436,14 @@ File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
 LaTeX Warning: Unused global option(s):
     [letter].
 
-(./hw2.aux)
+(./hw2.aux
+
+LaTeX Warning: Label `some-code' multiply defined.
+
+
+LaTeX Warning: Label `fig:awesome_image' multiply defined.
+
+)
 \openout1 = `hw2.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 70.
@@ -549,65 +556,88 @@ LaTeX Info: Redefining \nameref on input line 70.
 \c@lstlisting=\count133
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Try loading font information for U+msa on input line 73.
+ <mat_mul_scale.png, id=44, 621.522pt x 561.297pt>
+File: mat_mul_scale.png Graphic file (type png)
+
+<use mat_mul_scale.png>
+Package pdftex.def Info: mat_mul_scale.png used on input line 87.
+(pdftex.def)             Requested size: 375.80542pt x 339.39302pt.
+LaTeX Font Info:    Try loading font information for U+msa on input line 93.
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2009/06/22 v3.00 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 73.
+LaTeX Font Info:    Try loading font information for U+msb on input line 93.
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
 )
-LaTeX Font Info:    Try loading font information for U+rsfs on input line 73.
+LaTeX Font Info:    Try loading font information for U+rsfs on input line 93.
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/jknapltx/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
-) [1
-
-{/usr/local/texlive/2012/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-
-AED: lastpage setting LastPage
+)
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
  Make it at least 13.59999pt.
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[2]
+[1{/usr/local/texlive/2012/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
-Package caption Warning: Unused \captionsetup[lstlisting] on input line 31.
-See the caption package documentation for explanation.
+ <./mat_mul_scale.png>]
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
+nput line 116.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 132.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 132.
-(./hw2.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 132.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 132.
+Overfull \hbox (6.0pt too wide) in paragraph at lines 116--116
+[][][][][][][] 
+ []
+
+Missing character: There is no É in font cmtt10!
+
+Overfull \hbox (6.0pt too wide) in paragraph at lines 122--122
+[][][][][][][] 
+ []
+
+Missing character: There is no É in font cmtt10!
+[2] <conv2d_scale.png, id=78, 601.2864pt x 513.117pt>
+File: conv2d_scale.png Graphic file (type png)
+ <use conv2d_scale.png>
+Package pdftex.def Info: conv2d_scale.png used on input line 140.
+(pdftex.def)             Requested size: 375.80542pt x 320.69734pt.
+
+
+AED: lastpage setting LastPage
+[3 <./conv2d_scale.png>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 169.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 169.
+ (./hw2.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 169.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 169.
 Package rerunfilecheck Info: File `hw2.out' has not changed.
-(rerunfilecheck)             Checksum: B4DA68D211EC41EFCDCCD7ED8D97B5F0;59.
+(rerunfilecheck)             Checksum: 798D6E4D739B9BDA79E06C8002535CD3;661.
 
 
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 132.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 169.
  ) 
 Here is how much of TeX's memory you used:
- 9649 strings out of 493488
- 142301 string characters out of 3141326
- 261088 words of memory out of 3000000
- 12802 multiletter control sequences out of 15000+200000
- 10296 words of font info for 40 fonts, out of 3000000 for 9000
+ 9839 strings out of 493488
+ 144541 string characters out of 3141326
+ 311088 words of memory out of 3000000
+ 12961 multiletter control sequences out of 15000+200000
+ 10641 words of font info for 42 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
- 36i,11n,58p,235b,327s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 36i,11n,58p,495b,1102s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
-></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><
-/usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></u
-sr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb>
-Output written on hw2.pdf (2 pages, 47864 bytes).
+></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb>
+</usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></
+usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on hw2.pdf (3 pages, 257814 bytes).
 PDF statistics:
- 38 PDF objects out of 1000 (max. 8388607)
- 29 compressed objects within 1 object stream
- 4 named destinations out of 1000 (max. 500000)
- 9 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 108 PDF objects out of 1000 (max. 8388607)
+ 94 compressed objects within 1 object stream
+ 33 named destinations out of 1000 (max. 500000)
+ 91 words of extra memory for PDF output out of 10000 (max. 10000000)
 

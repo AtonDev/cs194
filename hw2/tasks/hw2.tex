@@ -58,7 +58,7 @@
 %TITLE AND HEADERS
 %-------------------------------------------------------------------------
 
-\lhead{Asssignment 1}
+\lhead{Asssignment 2}
 \chead{UCID: 22365174}
 \rhead{Arturo Pacifico Griffini}
 
@@ -68,7 +68,7 @@
 \date{}
 
 \begin{document}
-\maketitle
+%\maketitle
 %\input{./title.tex}
 
 \pagebreak
@@ -78,45 +78,82 @@
 %-------------------------------------------------------------------------
 
 
-\section{Measuring Execution Time}
+\section{Matrix Multiply}
+
+\subsection{Scaling Plot}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{mat_mul_scale.png}
+\caption{series 1: omp for; series 2: omp task; series 3: pThreads}
+\label{fig:awesome_image}
+\end{figure}
+
+\subsection{Peak Performance}
+I changed the for loop ordering for all matrix multiply implementation to make the process a little faster. So, the scalar baseline was $970MFlop/s$ and the best parallel performance was $8060MFlop/s$ with 14 threads using the OpenMP task implementation. Hence, the speed-up was $8.3$ time faster than the baseline. 
+
+\noindent No, we are not achieving linear speed-up. The speed-up is about $0.86$ performance improvement per thread for the first ten threads. For the runs of 1 thread through 10 threads the performance increases linearly. However, it is not an ideal linear scaling as the speed-up is less then 1 performance improvement per thread. And also the performance starts flattening out by running the program on 11 through 16 threads.
+
+\noindent The OpenMP Task implementation is the one that performs the best because it deals better with load balancing, namely faster threads do not remain idle while waiting for slower threads to complete execution. 
+
+
+\subsection{Measuring up peak performance}
+The peak performance achieved by our algorithm is $8.06$ GigaFlops/s, which is about $9.5$ slower than the peak performance of one hive machine. This is because our algorithm only exploits multiple threads of execution, but does not exploit memory optimisations and SSE intrinsics. I would do some loop unrolling, reorder the loops so that I can load some values out of the inner loop and save them on some register, and use SSE intrinsics to do multiple instructions at the same time.
+
+
+\subsection{Preference}
+I like OpenMP better because it is much more productive that pThreads. Id est development is faster because a lot is done for you already, and there is less risk to shoot yourself in the foot compared to pThreads. However, sometimes I prefer to have more control on how my threads are being utilised and for that I would use pThreads.
+
+\subsection{How does OpenMp work}
+OpenMP is a high level abstraction that uses pThreads under the hood. When the -fopenmp flag is activated the compiler transforms the source code into multithreaded code (like in the example below), and follows roughly the following steps:
+\begin{enumerate}
+\item Reads and parses OpenMP directives, and checks for correctness
+\item Translates SECTIONs to DO/FOR statements
+\item Makes implicit barriers explicit
+\item Implements some optimisations like merging adjacent parallel regions
+\item Implements variable data attributes, sets up storage and range for initialisation
+\end{enumerate}
+\begin{lstlisting}[label=some-code,caption=Original Code]
+#pragma omp for
+for( i = 0; i < n; i++ ) 
+{ É}
+\end{lstlisting}
+
+\begin{lstlisting}[label=some-code,caption=Transformation]
+tid = ompc_get_thread_num();
+ompc_static_init (tid, lower,upper, 
+incr,.); 
+for( i = lower;i < upper;i += incr ) 
+{ É }
+// Implicit BARRIER
+ompc_barrier();
+\end{lstlisting}
+
+\pagebreak
+
+\section{Two-Dimensional Convolution}
+
+\subsection{Scaling Plots}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{conv2d_scale.png}
+\caption{series 1: -n1; series 2: -n10}
+\label{fig:awesome_image}
+\end{figure}
+
+
+\subsection{Comments On Scaling Performances}
+The code scales better with maximum radius 10. This could be due to the fact that we exploit more spatial locality in the radius loops. We could improve performance by coin multiple operations with SSE intrinsics. For example when the blur radius is even.
+\subsection{Time spent on assignment}
+About 4 hours...
+
+
+
+
 
 %\begin{lstlisting}[label=some-code,caption=Random Permutation with 1 cycle]
-%
-%/* Sets ARRAY to an array representation of an
-%   N-Permuation with one cycle.*/
-%void shuffleArray1c(int array[], int size) {
-%  // init random cycle permutation  array of size SIZE
-%  int * cycle_array = (int *)malloc(size * sizeof(int));
-%  shuffleArray(cycle_array, size);
-%
-%  //corner case: glue the two ends of the cycle together
-%  array[cycle_array[size - 1]] = cycle_array[0];
-%
-%  //go through the cycle permutation array to construct the result array
-%  for (int i = 0; i < size - 1; i += 1) {
-%    array[cycle_array[i]] = cycle_array[i + 1];
-%  }
-%  free(cycle_array);
-%}
-%
-%/* Initializes ARRAY of size SIZE to (0, ..., SIZE-1)
-%   and shuffles it using Fisher-Yates algorithm. */
-%void shuffleArray(int array[], int size) {
-%  //initialize array (0, ..., size - 1)
-%  for (int i = 0; i < size; i += 1)
-%    array[i] = i;
-%
-%  //seed the random number generator with the current time
-%  srand(time(NULL));
-%
-%  //shuffle array using Fisher-Yates algorithm
-%  for (int i = 0; i < size; ++i) {
-%    int rand_index = rand() % size;
-%    int t = array[i];
-%    array[i] = array[rand_index];
-%    array[rand_index] = t;
-%  }
-%}
+
 %\end{lstlisting}
 
 
