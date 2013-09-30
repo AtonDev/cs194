@@ -1,10 +1,4 @@
-#include <cstdlib>
-#include <cstdio>
-#include <cstring>
-#include <algorithm>
-#include <unistd.h>
-#include <sys/time.h>
-#include <time.h>
+#include "my_blurs.h"
 
 using namespace std;
 
@@ -33,7 +27,7 @@ void simple_blur(float* out, int n, float* frame, int* radii){
 
 // My Blur
 void my_blur(float* out, int n, float* frame, int* radii){
-  // ... Your Code Here ...
+  
 }
 
 int main(int argc, char *argv[])
@@ -56,11 +50,31 @@ int main(int argc, char *argv[])
   simple_blur(out, n, frame, radii);
   time = timestamp() - time;
 
-  //Blur using your blur
+  //Blur using vector_blur
   float* out2 = new float[n*n];
   double time2 = timestamp();
-  my_blur(out2, n, frame, radii);
+  vector_blur(out2, n, frame, radii);
   time2 = timestamp() - time2;
+
+
+  //Blur Using parallel blur
+  printf("parallel_blur\n");
+  printf("nthr\t time\n");
+  for (int nthr = 1; nthr <= 16; nthr++) {
+    omp_set_num_threads(nthr);
+    float* out3 = new float[n*n];
+    double time3 = timestamp();
+    parallel_blur(out3, n, frame, radii);
+    time3 = timestamp() - time3;
+    printf("%d\t %.3f\n", nthr, time3);
+  }
+
+  //Blur using fastest_blur
+  float* out3 = new float[n*n];
+  omp_set_num_threads(16);
+  double time3 = timestamp();
+  fastest_blur(out3, n, frame, radii);
+  time3 = timestamp() - time3;
 
   //Check result
   for(int i=0; i<n; i++)
@@ -83,5 +97,6 @@ int main(int argc, char *argv[])
 
   //Print out Time
   printf("Time needed for naive blur = %.3f seconds.\n", time);
-  printf("Time needed for your blur = %.3f seconds.\n", time2);
+  printf("Time needed for vector blur = %.3f seconds.\n", time2);
+  printf("Time needed for fastest blur = %.3f seconds.\n", time3);
 }
