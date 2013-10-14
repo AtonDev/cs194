@@ -104,10 +104,10 @@ int main(int argc, char *argv[])
     {
       float d = h_A[i] + h_B[i];
       if(h_Y[i] != d)
-	{
-	  printf("error at %d :(\n", i);
-	  break;
-	}
+    	{
+    	  printf("error at %d :(\n", i);
+    	  break;
+    	}
     }
 
   /* Shut down the OpenCL runtime */

@@ -6,7 +6,7 @@ OCL_INC=/usr/local/cuda-4.2/include
 OCL_LIB=/usr/local/cuda-4.2/lib64
 
 %.o: %.cpp clhelp.h
-	g++ -msse4 -O2 -c $< -I$(OCL_INC)
+	g++ -msse4.1 -O2 -c $< -I$(OCL_INC)
 
 all: $(OBJS)
 	g++ incr.o clhelp.o -o incr -L$(OCL_LIB) -lOpenCL
