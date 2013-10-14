@@ -74,8 +74,8 @@ int main(int argc, char *argv[])
   CHK_ERR(err);
  
   /* CS194: Define the global and local workgroup sizes */
-  size_t global_work_size[1] = {0};
-  size_t local_work_size[1] = {0};
+  size_t global_work_size[1] = {n};
+  size_t local_work_size[1] = {128};
   
   /* CS194: Set Kernel Arguments */
   err  = clSetKernelArg(vvadd, 0, sizeof(cl_mem), &g_Y);
@@ -105,10 +105,10 @@ int main(int argc, char *argv[])
     {
       float d = h_A[i] + h_B[i];
       if(h_Y[i] != d)
-	{
-	  printf("error at %d :(\n", i);
-	  break;
-	}
+    	{
+    	  printf("error at %d :(\n", i);
+    	  break;
+    	}
     }
 
   /* Shut down the OpenCL runtime */
