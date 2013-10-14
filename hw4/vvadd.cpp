@@ -56,7 +56,6 @@ int main(int argc, char *argv[])
   
   /* CS194: Here's something to get you started  */
   g_Y = clCreateBuffer(cv.context,CL_MEM_READ_WRITE,sizeof(float)*n,NULL,&err);
-  printf("gY buffer created");
   CHK_ERR(err);
   g_A = clCreateBuffer(cv.context,CL_MEM_READ_WRITE,sizeof(float)*n,NULL,&err);
   CHK_ERR(err);
@@ -83,6 +82,9 @@ int main(int argc, char *argv[])
   CHK_ERR(err);
   err = clSetKernelArg(vvadd, 2, sizeof(cl_mem), &g_B);
   CHK_ERR(err);
+  err = clSetKernelArg(vvadd, 3, sizeof(int), &n);
+  CHK_ERR(err);
+
   /* CS194: Call kernel on the GPU */
   err = clEnqueueNDRangeKernel(cv.commands,
                                vvadd,

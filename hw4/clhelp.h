@@ -36,10 +36,10 @@ std::string reportOCLError(cl_int err);
 
 #define CHK_ERR(err) {\
   if(err != CL_SUCCESS) {\
-    printf("Error: %s, File: %s, Line: %d\n", reportOCLError(err).c_str(), __FILE__, __LINE__); \
-    exit(-1);\
+  printf("Error: %s, File: %s, Line: %d\n", reportOCLError(err).c_str(), __FILE__, __LINE__); \
+  exit(-1);\
   }\
-}
+  }
 
 void initialize_ocl(cl_vars_t& cv);
 void uninitialize_ocl(cl_vars_t & clv);
