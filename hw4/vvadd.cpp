@@ -58,7 +58,6 @@ int main(int argc, char *argv[])
   g_Y = clCreateBuffer(cv.context,CL_MEM_READ_WRITE,sizeof(float)*n,NULL,&err);
   printf("gY buffer created");
   CHK_ERR(err);
-
   g_A = clCreateBuffer(cv.context,CL_MEM_READ_WRITE,sizeof(float)*n,NULL,&err);
   CHK_ERR(err);
   g_B = clCreateBuffer(cv.context,CL_MEM_READ_WRITE,sizeof(float)*n,NULL,&err);
@@ -74,8 +73,8 @@ int main(int argc, char *argv[])
   CHK_ERR(err);
  
   /* CS194: Define the global and local workgroup sizes */
-  size_t global_work_size[1] = {0};
-  size_t local_work_size[1] = {0};
+  size_t global_work_size[1] = {n};
+  size_t local_work_size[1] = {128};
   
   /* CS194: Set Kernel Arguments */
   err  = clSetKernelArg(vvadd, 0, sizeof(cl_mem), &g_Y);
