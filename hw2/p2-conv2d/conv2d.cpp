@@ -25,6 +25,7 @@ double timestamp()
 void blur_frame(int width, int height, int* blur_radii,
 		pixel_t *in, pixel_t *out, int nthr)
 {
+  double counter = 0;
   pixel_t t;
 #pragma omp for
   for(int y = 0; y < height; y++)
@@ -48,6 +49,7 @@ void blur_frame(int width, int height, int* blur_radii,
 		  t.r += in[yy*width + xx].r;
 		  t.g += in[yy*width + xx].g;
 		  t.b += in[yy*width + xx].b;
+		  counter += 3;
 
 		}
 	    }
@@ -59,10 +61,11 @@ void blur_frame(int width, int height, int* blur_radii,
 	  t.r *= scale;
 	  t.g *= scale;
 	  t.b *= scale;
-
+	  counter += 4;
 	  out[idx] = t;
 	}
     }
+  printf("mflops: %.3f\n", counter / 1000000);
 }
 
 void convert_to_pixel(pixel_t *out, frame_ptr in)

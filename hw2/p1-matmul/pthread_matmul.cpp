@@ -18,9 +18,9 @@ void *matmuld_worker(void *arg)
   double **c = t->c;
   for(int i = t->start; i < t->end; i++)
     {
-      for(int j = 0; j < 1024; j++)
+      for(int k = 0; k < 1024; k++)
 	{
-	  for(int k = 0; k < 1024; k++)
+	  for(int j = 0; j < 1024; j++)
 	    {
 	      c[i][j] += a[i][k]*b[k][j];
 	    }
@@ -42,12 +42,24 @@ void pthread_matmuld(double **a,
   pthread_t *thr = new pthread_t[nthr];
   worker_t *tInfo = new worker_t[nthr];
 
-  tInfo[0].a = a;
-  tInfo[0].b = b;
-  tInfo[0].c = c;
-  tInfo[0].start = 0;
-  tInfo[0].end = 1024;
-  matmuld_worker((void*)tInfo);
+ 
+  int block = (1024 / nthr) + 1;
+  // Create threads 
+  for (int i = 0; i < nthr; i++) {    
+    tInfo[i].start = block * i;
+    if (block * (i + 1) >= 1024)
+      tInfo[i].end = 1024;
+    else
+      tInfo[i].end = block * (i + 1);
+    tInfo[i].a = a;
+    tInfo[i].b = b;
+    tInfo[i].c = c;
+    pthread_create(&thr[i], NULL, matmuld_worker, (void *)(&tInfo[i]));  
+  }
+  
+  for (int i = 0; i < nthr; i++) {
+    pthread_join(thr[i], NULL);
+    }
   
   delete [] thr;
   delete [] tInfo;

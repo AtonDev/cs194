@@ -28,6 +28,9 @@ mem_b:
 graph:
 	g++ -O2 graph.cpp -o test-out
 
+matrix:
+	g++ counters.cpp mmultiply.cpp square_sgemm.o -o matrix-out
+
 clean:
 	rm -rf *-out
 	rm -rf *~
