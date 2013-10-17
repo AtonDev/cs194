@@ -111,7 +111,6 @@ int main(int argc, char *argv[])
     //converge towards end of iteration
     length = length / 16;
   }
-
   t0 = timestamp()-t0;
 
   //read result of GPU on host CPU
