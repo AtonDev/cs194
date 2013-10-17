@@ -134,7 +134,7 @@ int main(int argc, char *argv[])
     }
   else
     {
-      printf("CORRECT: size of n: %d\n Speed up vs serial on CPU: %.2fx\n",n,t1/t0);
+      printf("CORRECT: size of n: %d\nSpeed up vs serial on CPU: %.2fx\n",n,t1/t0);
     }
 
   uninitialize_ocl(cv);
