@@ -38,7 +38,4 @@ __kernel void reduce(__global float* in,
     out[get_group_id(0)] = scratch[0];
   }
 
-  //repeat kernel until by passing in out until the
-  //out lenght == 1
-
 }
