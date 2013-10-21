@@ -8,6 +8,8 @@ __kernel void update(__global int *in,
 		     int n)
 {
   size_t idx = get_global_id(0);
+  size_t tid = get_local_id(0);
+  size_t dim = get_local_size(0);
   size_t gid = get_group_id(0);
 
   if(idx < n && gid > 0)
@@ -23,6 +25,9 @@ __kernel void scan(__global int *in,
 		   int n)
 {
   int idx = get_global_id(0);
+  size_t tid = get_local_id(0);
+  size_t dim = get_local_size(0);
+  size_t gid = get_group_id(0);
   
   /* CS194: Write this kernel! */
   int offset;
