@@ -4,8 +4,8 @@ UNAME_S := $(shell uname -s)
 
 #check if linux
 ifeq ($(UNAME_S), Linux)
-OCL_INC=/usr/local/cuda/include
-OCL_LIB=/usr/local/cuda/lib64
+OCL_INC=/usr/local/cuda-4.2/include
+OCL_LIB=/usr/local/cuda-4.2/lib64
 %.o: %.cpp clhelp.h
 	g++ -O2 -c $< -I$(OCL_INC)
 
