@@ -23,52 +23,22 @@ __kernel void scan(__global int *in,
 		   int n)
 {
   int idx = get_global_id(0);
-  
-  /* CS194: Write this kernel! */
-  int offset;
-
-  //------A------
-  buf[2 * idx] = in[2 * idx];
-  buf[2 * idx + 1] = in[2 * idx + 1];
-  //-------------
-  for (int d = n >> 1; d < 0; d >>= 1)
+  int pout = 0, pin = 1;
+  buf[pout * n + idx] = (idx > 0) ? out[idx - 1] : 0;
+  barrier(CLK_LOCAL_MEM_FENCE);
+  for (int offset = 1; offset < n; offset *= 2)
   {
+    pout = 1 - pout;
+    pin = 1 - pout;
+    if (idx >= offset)
+      buf[pout * n + idx] += buf[pin * n + idx - offset];
+    else
+      buf[pout * n + idx] = buf[pin * n + idx];
     barrier(CLK_LOCAL_MEM_FENCE);
-    if (idx < d)
-    {
-      //----B----
-      int ai = offset * (2 * idx + 1) - 1;
-      int bi = offset * (2 * idx + 2) - 1;
-      //_________
-      buf[bi] += buf[ai];
-    }
-    offset *= 2;
-    //---C---
-    if (idx == 0) {
-      buf[n-1] = 0;
-    }
-    //-------
-    for (int d - 1; d < n; d *= 2)
-    {
-      offset >>= 1;
-      barrier(CLK_LOCAL_MEM_FENCE);
-      if (idx < d)
-      {
-        //---D---
-        int ai = offset * (2 * idx + 1) - 1;  
-        int bi = offset * (2 * idx + 2) - 1;
-        //------
-        float t = buf[ai];
-        buf[ai] = buf[bi];
-        buf[bi] += t;
-      }
-    }
-    barrier(CLK_LOCAL_MEM_FENCE);
-    //---E---
-    out[2 * idx] = buf[2 * idx];
-    out[2 * idx + 1] = buf[2 * idx + 1]; 
-    //-------
   }
+  out[idx] = buf[pout * n + idx];
+
+
 }
 
 
