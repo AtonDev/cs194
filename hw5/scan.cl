@@ -25,8 +25,21 @@ __kernel void scan(__global int *in,
   size_t gid = get_group_id(0);
   
   /* CS194: Write this kernel! */
-
+  __local int buffer2[128];
+  buf[tid] = in[idx];
+  barrier(CLK_LOCAL_MEM_FENCE);
+  for (int offset = 1; offset < dim; offset *= 2) {
+    if (tid >= offset) {
+       buffer2[tid - offset] = buf[tid - offset];
+    }
+    barrier(CLK_LOCAL_MEM_FENCE);
+    if (tid >= offset) {
+      buf[tid] = buffer2[tid - offset] + buf[tid];
+    }
+    barrier(CLK_LOCAL_MEM_FENCE);
+  }
+  out[idx] = buf[tid];
+  if (tid == dim - 1) {
+    bout[gid] = buf[tid];
+  }
 }
-
-
-
