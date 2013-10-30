@@ -188,7 +188,7 @@ int main(int argc, char *argv[])
     /* ptr swapping */
     cl_mem tmp = g_in;
     g_in = g_out;
-    g_out = g_in;
+    g_out = tmp;
 
   }
 
@@ -213,6 +213,7 @@ int main(int argc, char *argv[])
 	  if(!silent)
 	    printf("not sorted @ %d: %d vs %d!\n", i, in[i], out[i]);
 	  goto done;
+	  
 	}
     }
  if(!silent)
@@ -388,7 +389,7 @@ void rsort_reassemble(cl_command_queue &queue,
 
   /* CS194: number of bytes for dynamically 
    * sized local (private memory) "buf"*/
-  err = clSetKernelArg(reassemble_kern, 4, local_work_size[0]*sizeof(cl_int), NULL);
+  err = clSetKernelArg(reassemble_kern, 4, 2*local_work_size[0]*sizeof(cl_int), NULL);
   CHK_ERR(err);
 
 

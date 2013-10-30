@@ -96,7 +96,8 @@ __kernel void reassemble(__global int * in,
     } else {
       index = zeros[idx] - 1;
     }
-    out[index] = in[idx];
+    if(index < n) 
+	out[index] = in[idx];
   }
 }
 
