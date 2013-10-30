@@ -24,6 +24,16 @@ void rsort_scan(cl_command_queue &queue,
 		    int k,
 		    int len);
 
+void rsort_reassemble(cl_command_queue &queue,
+        cl_context &context,
+        cl_kernel &reassemble_kern,
+        cl_mem &in,
+        cl_mem &ones, 
+        cl_mem &zeros, 
+        cl_mem &out, 
+        int k,
+        int len);
+
 void cpu_rscan(int *in, int *out, int v, int k, int n)
 {
   int t = (in[0] >> k) & 0x1;
@@ -139,6 +149,51 @@ int main(int argc, char *argv[])
 
   double t0 = timestamp();
   /* CS194: Implement radix sort here */
+
+  for (int32_t bit = 0; bit < 32; bit++)
+  {
+    //scan with elements with 0 in lsb
+    rsort_scan(cv.commands,
+        cv.context,
+        kernel_map[scan_name_str],
+        kernel_map[update_name_str],
+        g_in, 
+        g_zeros, 
+        0,
+        bit,
+        n);
+
+    //scan with elements with 1 in lsb
+    rsort_scan(cv.commands,
+        cv.context,
+        kernel_map[scan_name_str],
+        kernel_map[update_name_str],
+        g_in, 
+        g_ones, 
+        1,
+        bit,
+        n);
+    
+    /* scatter partially ordered output. */
+    rsort_reassemble(cv.commands,
+        cv.context,
+        kernel_map[reassemble_name_str],
+        g_in,
+        g_ones, 
+        g_zeros, 
+        g_out, 
+        bit,
+        n);
+
+    /* ptr swapping */
+    cl_mem tmp = g_in;
+    g_in = g_out;
+    g_out = g_in;
+
+  }
+
+
+
 
   t0 = timestamp() - t0;
 
@@ -298,3 +353,75 @@ void rsort_scan(cl_command_queue &queue,
   clReleaseMemObject(g_bscan);
 
 }
+
+/* This Function reorders the elements using the results from the scans. */
+void rsort_reassemble(cl_command_queue &queue,
+        cl_context &context,
+        cl_kernel &reassemble_kern,
+        cl_mem &in,
+        cl_mem &ones, 
+        cl_mem &zeros, 
+        cl_mem &out, 
+        int k,
+        int len)
+{
+  size_t global_work_size[1] = {len};
+  size_t local_work_size[1] = {128};
+  cl_int err;
+  
+  adjustWorkSize(global_work_size[0], local_work_size[0]);
+  global_work_size[0] = std::max(local_work_size[0], global_work_size[0]);
+
+
+  err = clSetKernelArg(reassemble_kern, 0, sizeof(cl_mem), &in);
+  CHK_ERR(err);
+
+  err = clSetKernelArg(reassemble_kern, 1, sizeof(cl_mem), &out);
+  CHK_ERR(err);
+
+  err = clSetKernelArg(reassemble_kern, 2, sizeof(cl_mem), &ones);
+  CHK_ERR(err);
+
+  err = clSetKernelArg(reassemble_kern, 3, sizeof(cl_mem), &zeros);
+  CHK_ERR(err);
+  
+
+  /* CS194: number of bytes for dynamically 
+   * sized local (private memory) "buf"*/
+  err = clSetKernelArg(reassemble_kern, 4, local_work_size[0]*sizeof(cl_int), NULL);
+  CHK_ERR(err);
+
+
+
+  /* CS194: the current bit position (0 to 31) that
+   * we want to operate on */
+  err = clSetKernelArg(reassemble_kern, 5, sizeof(int), &k);
+  CHK_ERR(err);
+
+  err = clSetKernelArg(reassemble_kern, 6, sizeof(int), &len);
+  CHK_ERR(err);
+
+  err = clEnqueueNDRangeKernel(queue,
+             reassemble_kern,
+             1,//work_dim,
+             NULL, //global_work_offset
+             global_work_size, //global_work_size
+             local_work_size, //local_work_size
+             0, //num_events_in_wait_list
+             NULL, //event_wait_list
+             NULL //
+             );
+  CHK_ERR(err);
+
+}
+
+
+
+
+
+
+
+
+
+
+
